@@ -1,0 +1,34 @@
+Running job in the cluster using srun command and sbatch Run a job with srun command
+ (only for testing purpose)
+-N -> The number of nodes needed to run the job
+--gres=gpu -> The number of GPUs needed to run the job --time=00:05:00 -> Job will be running for 5 minutes
+--partition -> Need to specify the partion assigned to your team --pty bash -> Interactive Bash Terminal
+Run a job in the cluster using sbatch command
+ $ srun -N 1 --gres=gpu:1 --time=00:05:00 --partition=<partition_name> --pty bash
+vim hellompi.c
+#include <stdio.h>
+#include <stdlib.h>
+#include <mpi.h>
+int main(int argc, char *argv[], char *envp[]) {
+    int numprocs, rank, namelen;
+    char processor_name[MPI_MAX_PROCESSOR_NAME];
+    MPI_Init(&argc, &argv);
+    MPI_Comm_size(MPI_COMM_WORLD, &numprocs);
+    MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+    MPI_Get_processor_name(processor_name, &namelen);
+    printf("Process %d on %s out of %d\n", rank, processor_name, numprocs);
+    MPI_Finalize();
+}
+$ vim test.sh #!/bin/bash
+#SBATCH --job-name=hellompi
+#SBATCH --output=/nfs/projects/mbzuai/hellompi.out
+#SBATCH --partition=<partition-name>
+#SBATCH --ntasks=56
+#SBATCH --time=00:30:00
+#Load the default OpenMPI module.
+spack load openmpi@4.0.2
+#Run the hellompi program with mpirun. The -n flag is not required;
+#mpirun will automatically figure out the best configuration from the Slurm environment variables. mpirun ./hellompi
+Run a command inside the folder with files created above.
+$ spack load openmpi@4.0.2 $ which mpicc
+$ mpicc hellompi.c hellompi $ sbatch test.sh
