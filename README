@@ -1,0 +1,7 @@
+
+# To test parallel programming 
+mpicc cpi.c -o cpi
+vi nodes # nodes name on which you want to run job
+mpirun --map-by node -machinefile ./nodes -np 2 /home/netweb/mpitest/cpi 
+
+#it should go on nodes specified in nodes file.

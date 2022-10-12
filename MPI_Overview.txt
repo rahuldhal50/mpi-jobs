@@ -1,0 +1,54 @@
+
+MPI
+Standard compiler like C and Fortran does not include any constructs supporting parallelism so MPI is designed to allow users to create programs 
+that can run efficiently on most parallel architectures.
+
+It primarily addresses the message-passing parallel programming model: 
+
+Which use to moved data from the address space of one process to another process through cooperative operations on 
+each process using Interface specifications have been defined for C and Fortran90 language bindings.
+
+
+MPICH
+
+MPICH is a high-performance and widely portable implementation of the Message Passing Interface (MPI) 
+standard (MPI-1, MPI-2 and MPI-3).
+
+The default runtime environment in MPICH is called Hydra (mpiexec).
+
+The process manager provides the "mpiexec" executable, together with
+other utility executables. MPICH comes packaged with multiple
+process managers; the default is called Hydra
+
+The goals of MPICH are: 
+(1) to provide an MPI implementation that efficiently supports different computation and communication 
+platforms including commodity clusters (desktop systems, shared-memory systems, multicore architectures), 
+high-speed networks (10 Gigabit Ethernet, InfiniBand, Myrinet, Quadrics) and proprietary high-end computing systems 
+(Blue Gene, Cray).
+(2) to enable cutting-edge research in MPI through an easy-to-extend modular framework for 
+other derived implementations.
+
+MPIExec
+
+mpiexec is a replacement program for the script mpirun, which is part of the mpich package. 
+It is used to initialize a parallel job from within a PBS batch or interactive environment. 
+mpiexec uses the task manager library of PBS to spawn copies of the executable on the nodes in a PBS allocation.
+
+Reasons to use mpiexec rather than a script (mpirun) or an external daemon (mpd):
+
+1)Starting tasks with the task manager (TM) interface is much faster than invoking a separate rsh * once for each process.
+2)Resources used by the spawned processes are accounted correctly with mpiexec, and reported in the PBS logs, 
+because all the processes of a parallel job remain under the control of PBS, unlike when using mpirun-like scripts.
+3)Tasks that exceed their assigned limits of CPU time, wallclock time, memory usage, or disk space are killed cleanly by 
+PBS. It is quite hard for processes to escape control of the resource manager when using mpiexec.
+4)You can use mpiexec to enforce a security policy. If all jobs are forced to spawn using mpiexec and 
+the PBS execution environment, it is not necessary to enable rsh or ssh access to the compute nodes in the cluster.
+
+
+
+https://www.slothparadise.com/how-to-setup-mpi-on-centos-7-2-connected-virtual-machines-part-2/
+https://wiki.mpich.org/mpich/index.php/Frequently_Asked_Questions
+http://www.mpich.org/about/overview/
+https://computing.llnl.gov/tutorials/mpi/#What
+http://docs.adaptivecomputing.com/torque/2-5-12/help.htm#topics/7-messagePassing/MPISupport.htm
+https://www.slothparadise.com/running-mpi-common-mpi-troubleshooting-problems/
